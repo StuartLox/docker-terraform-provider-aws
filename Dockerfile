@@ -21,7 +21,7 @@ RUN rm -rf terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 WORKDIR "/root"
 
 RUN echo $' providers { \n \
-aws = "/go/bin/terraform_provider_aws_v${TERRAFORM_AWS_VERSION}" \n \
+aws = "/go/bin/terraform-provider-aws" \n \
 }' > /root/.terraformrc
 
 WORKDIR $GOPATH/bin
