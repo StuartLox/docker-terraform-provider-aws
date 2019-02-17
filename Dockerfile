@@ -28,8 +28,6 @@ WORKDIR $GOPATH/bin
 
 RUN wget https://github.com/StuartLox/terraform-provider-aws/releases/download/v1.60.1/terraform-provider-aws
 
-# RUN unzip darwin_amd64.zip
-# RUN mv darwin_amd64/terraform_provider_aws_v1.60.0 .
 RUN chmod +x terraform-provider-aws
 RUN ./terraform-provider-aws
 
