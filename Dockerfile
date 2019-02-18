@@ -1,17 +1,14 @@
-FROM hashicorp/terraform
+FROM hashicorp/terraform:0.11.11
+MAINTAINER Stuart Loxton <stuart.loxton@xinja.com.au>
 
-WORKDIR "/root"
+ENV TERRAGRUNT_VERSION=v0.17.4
+ADD https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 /bin/terragrunt
+RUN chmod +x /bin/terragrunt
 
-# RUN echo $' providers { \n \
-# terraform-aws-provider = "/root/terraform-provider-aws" \n \
-# }' > /root/.terraformrc
+ENV TERRAFORM_PROVIDER_VERSION=v1.60.1
+ADD https://github.com/StuartLox/terraform-provider-aws/releases/download/${TERRAFORM_PROVIDER_VERSION}/terraform-provider-aws /bin/terraform-provider-aws
+RUN chmod +x /bin/terraform-provider-aws
 
-
-RUN wget https://github.com/StuartLox/terraform-provider-aws/releases/download/v1.60.1/terraform-provider-aws
-
-RUN chmod +x terraform-provider-aws
-RUN mkdir -p .terraform.d/plugins/linux_amd64/
-RUN  mv terraform-provider-aws ~/.terraform.d/plugins/linux_amd64/terraform-provider-aws
-ADD https://github.com/gruntwork-io/terragrunt/releases/download/v0.16.11/terragrunt_linux_amd64 /usr/local/bin/terragrunt
-RUN chmod +x /usr/local/bin/terragrunt
-ENTRYPOINT ["/usr/local/bin/terragrunt"]
+RUN mkdir -p /root/.terraform.d/plugins/linux_amd64/
+RUN cp bin/terraform-provider-aws /root/.terraform.d/plugins/linux_amd64/terraform-provider-aws
+ENV TF_PLUGIN_CACHE_DIR="/root/.terraform.d/plugin-cache"
